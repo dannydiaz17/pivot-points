@@ -1,6 +1,6 @@
-import datetime
-import requests
+from sym import *
 import json
+import requests
 
 
 def fetch():
@@ -24,6 +24,7 @@ def fetch():
     hi = float(fdict['high'])
     lo = float(fdict['low'])
     ps = float(fdict['priorSettle'])
+
     # I'm leaving this line in for future debugging
     # pretty = json.dumps(data,indent=4, separators=(',', ':'))
 
@@ -50,18 +51,8 @@ def arth():
     s2 = p - h + l
     s3 = l - 2 * (h - p)
 
-    print("R3:" + "{:.2f}".format(r3) + "\n")
-    print("R2:" + "{:.2f}".format(r2) + "\n")
-    print("R1:" + "{:.2f}".format(r1) + "\n")
-    print("PIVOT:" + "{:.2f}".format(p) + "\n")
-    print("S1:" + "{:.2f}".format(s1) + "\n")
-    print("S2:" + "{:.2f}".format(s2) + "\n")
-    print("S3:" + "{:.2f}".format(s3) + "\n")
-
 
 def writer():
-    fetch()
-    arth()
 
     reading = open("pivo.ts", 'r+').read().splitlines()
 
@@ -78,11 +69,31 @@ def writer():
         writing.close()
 
 
-writer()
+def printInfo():
+    print("Symbol: " + SYM(selSYM).FSYM + "\n")
+    print("R3:" + "{:.2f}".format(r3) + "\n")
+    print("R2:" + "{:.2f}".format(r2) + "\n")
+    print("R1:" + "{:.2f}".format(r1) + "\n")
+    print("PIVOT:" + "{:.2f}".format(p) + "\n")
+    print("S1:" + "{:.2f}".format(s1) + "\n")
+    print("S2:" + "{:.2f}".format(s2) + "\n")
+    print("S3:" + "{:.2f}".format(s3) + "\n")
 
-# NQ + MonthCODE + YEAR(YY)
 
-# March     = H
-# June      = M
-# September = U
-# December  = Z
+def select():
+    # selSYM = Selected Symbol
+    global selSYM
+
+    selSYM = input("Which symbol do you need pivots for?\nOnly works with 'NQ' for right now")
+
+    if selSYM not in symList:
+        selSYM = SYM(selSYM)
+    else:
+        pass
+
+    fetch()
+    arth()
+    writer()
+    printInfo()
+
+select()
