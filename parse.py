@@ -48,3 +48,5 @@ def addtoList(list):
 fetch()
 getInfo()
 addtoList()
+
+print("test")
