@@ -2,6 +2,13 @@
 import json
 import requests
 
+List = []
+
+
+def select():
+    selSYM = int(input("Select a symbol:\n(Choose number starting at \
+    0)\n" + str(List) + "\n"))
+    print()
 
 def fetch():
     url = 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/146/G?pageSize\
@@ -13,21 +20,22 @@ def fetch():
     # qudict as in Quotes Dict
     # fdict as in Final Dict
     qudict = data["quotes"]
-    fdict = qudict[0]
 
     for i in range(5):
-        SYMBOL(qudict[i])
-        print()
+        #tmp = SYMBOL(qudict[i])
+        dicti = qudict[i]
+        List.append(dicti['code'])
+
+        print(List)
+
+    for sym in List:
+        sym = SYMBOL(sym)
+        print(sym.hi)
 
     global hi
     global lo
     global ps
     global vl
-
-
-    hi = float(fdict['high'])
-    lo = float(fdict['low'])
-    ps = float(fdict['priorSettle'])
 
 
     # I'm leaving this line in for future debugging
@@ -88,12 +96,13 @@ def printInfo(symbl):
 #from parse import *
 
 
-List = []
+
 
 class SYMBOL:
     def __init__(self, list):
+
+        #product = list['productCode']
         self.symbol = list['code']
-        symbol = self.symbol
 
         if list['high'] != '-' or list['low'] != '-' or list['priorSettle'] != '-':
             sw = 1
@@ -118,13 +127,13 @@ class SYMBOL:
         volc = list['volume']
         self.vl = volc.replace(",", "")
 
-        List.append(symbol)
+
 
     def update(self):
         # self.Mnth() = ?
         pass
 
-fetch()
 
-print(List)
+fetch()
+select()
 # Symbol List
