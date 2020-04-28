@@ -3,3 +3,5 @@
 pivots.ts
 pivotsSTUDY.ts
 oldREADME.md
+*.pyc
+*.yml
