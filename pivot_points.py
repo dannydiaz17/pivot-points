@@ -2,13 +2,6 @@
 import json
 import requests
 
-List = []
-
-
-def select():
-    selSYM = int(input("Select a symbol:\n(Choose number starting at \
-    0)\n" + str(List) + "\n"))
-    print()
 
 def fetch():
     url = 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/146/G?pageSize\
@@ -16,37 +9,26 @@ def fetch():
     page = requests.get(url).text
     data = json.loads(page)
 
-# Nested Dictionaries
-    # qudict as in Quotes Dict
-    # fdict as in Final Dict
+    global qudict
+    # Nested Dictionaries
+        # qudict as in Quotes Dict
+        # fdict as in Final Dict
     qudict = data["quotes"]
 
+    ## I'm leaving this line in for future debugging
+    ## pretty = json.dumps(data,indent=4, separators=(',', ':'))
+
+
+def printSelection():
     for i in range(5):
-        #tmp = SYMBOL(qudict[i])
-        dicti = qudict[i]
-        List.append(dicti['code'])
-
-        print(List)
-
-    for sym in List:
-        sym = SYMBOL(sym)
-        print(sym.hi)
-
-    global hi
-    global lo
-    global ps
-    global vl
+        temp = dict(qudict[i])
+        name = temp['code']
+        vol = temp['volume']
+        print(str(i) + ": " + name + " Volume - " + str(vol) + "\n")
 
 
-    # I'm leaving this line in for future debugging
-    # pretty = json.dumps(data,indent=4, separators=(',', ':'))
-
-
-def arth():
+def arth(h, l, c):
     # Pivot math
-    h = hi
-    l = lo
-    c = ps
 
     global p
     global r1
@@ -65,7 +47,53 @@ def arth():
     s3 = l - 2 * (h - p)
 
 
-def writer():
+def getInfo():
+
+    global name
+    global hi
+    global lo
+    global ps
+    global vl
+
+    name = temp['code']
+
+    if temp['high'] == '-':
+
+        hi = None
+
+    elif temp['low'] == '-':
+
+        lo = None
+
+    elif temp['priorSettle'] == '-':
+
+        ps = None
+
+    elif temp['volume'] == '-':
+
+        vl = None
+
+    else:
+        hi = float(temp['high'])
+        lo = float(temp['low'])
+        ps = float(temp['priorSettle'])
+
+        volc = temp['volume']
+        vl = int(volc.replace(",", ""))
+
+    arth(hi, lo, ps)
+
+
+def printInfo():
+    print(name)
+    print("High = " + str(hi) + "\n")
+    print("Low = " + str(lo) + "\n")
+    print("Prior Settle = " + str(ps) + "\n")
+    print("Volume = " + str(vl) + "\n")
+    printPivots()
+
+
+def writeTS():
 
     reading = open("pivo.ts", 'r+').read().splitlines()
 
@@ -82,58 +110,36 @@ def writer():
         writing.close()
 
 
-def printInfo(symbl):
-    print("Symbol: " + symbl + "\n")
+def printPivots():
+    print("Symbol: " + name + "\n")
     print("R3:" + "{:.2f}".format(r3) + "\n")
     print("R2:" + "{:.2f}".format(r2) + "\n")
-    print("R1:" + "{:.2f}".format(r1) + "\n")
     print("PIVOT:" + "{:.2f}".format(p) + "\n")
     print("S1:" + "{:.2f}".format(s1) + "\n")
     print("S2:" + "{:.2f}".format(s2) + "\n")
     print("S3:" + "{:.2f}".format(s3) + "\n")
 
-
 #from parse import *
+def printInstr():
+    print("Instructions")
 
 
+def run(num):
+    global temp
+
+    temp = dict(qudict[num])
+    getInfo()
+    printInfo()
+    writeTS()
+    printInstr()
 
 
-class SYMBOL:
-    def __init__(self, list):
-
-        #product = list['productCode']
-        self.symbol = list['code']
-
-        if list['high'] != '-' or list['low'] != '-' or list['priorSettle'] != '-':
-            sw = 1
-        else:
-            sw = 2
-
-        def dashCase():
-            self.hi = list['high']
-            self.lo = list['low']
-            self.ps = list['priorSettle']
-
-        def othrCase():
-            self.hi = float(list['high'])
-            self.lo = float(list['low'])
-            self.ps = float(list['priorSettle'])
-
-        switch = {1 : dashCase,
-                  2 : othrCase,
-        }
-
-        switch[sw]()
-        volc = list['volume']
-        self.vl = volc.replace(",", "")
+def main():
+    fetch()
+    printSelection()
+    selSYM = int(input("Pick 0 - 4\n Enter number of selection:\n"))
+    run(selSYM)
 
 
-
-    def update(self):
-        # self.Mnth() = ?
-        pass
-
-
-fetch()
-select()
-# Symbol List
+if __name__ == "__main__":
+    main()
