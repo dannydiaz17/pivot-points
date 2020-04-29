@@ -12,14 +12,14 @@ I needed a tool to fetch data from a website and calculate some values. And plot
 - ThinkOrSwim
 
 ### **Downloading/Installation**
-Cloning Repo (Using CMD / Terminal)
+Cloning Repo (Using OS Shell)
 ```
 git clone https://github.com/dannydiaz17/pivot-points.git
 cd pivot-points
 ```
 Linux or MacOS (Run the python script)
 ```
-./pivot_points.py
+python pivot_points.py
 ```
 Windows
 ```
@@ -29,8 +29,11 @@ Windows
 After running > python pivot_points.py, a pivotsSTUDY.ts file will be created in the same directory.
 Add the pivotsSTUDY.ts file to TOS
 
-> Within TOS: Charts > Studies > Edit Studies... > Import... > "Select pivotsSTUDY.ts file"
-
+> If you get a ModuleNotFoundError: No module named 'requests'
+Run this command in shell
+```
+pip install requests
+```
 
 ## To do:
 
