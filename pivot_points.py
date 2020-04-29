@@ -1,4 +1,3 @@
-
 import json
 import requests
 
@@ -121,7 +120,17 @@ def printPivots():
 
 #from parse import *
 def printInstr():
-    print("Instructions")
+    print("""
+    Instructions for TOS:\n
+    1. Open ThinkOrSwim
+    2. Go to the Charts Tab
+    3. Click on Studies > Edit Studies > Import (Bottom Left)
+    4. Select pivotsSTUDY.ts
+
+    Always select Import and proceed to import
+    for EACH INDIVIDUAL USE OF SCRIPT
+    """)
+    input("") # Let's you read before closing
 
 
 def run(num):
