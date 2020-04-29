@@ -12,13 +12,21 @@ I needed a tool to fetch data from a website and calculate some values. And plot
 - ThinkOrSwim
 
 ### **Downloading/Installation**
-Using CMD / Terminal
+Cloning Repo (Using CMD / Terminal)
 ```
 git clone https://github.com/dannydiaz17/pivot-points.git
 cd pivot-points
-python pivot-points.py
 ```
-After running > python pivot-points.py, a pivotsSTUDY.ts file will be created in the same directory.
+Linux or MacOS (Run the python script)
+```
+./pivot_points.py
+```
+Windows
+```
+\.pivot_points.py
+```
+
+After running > python pivot_points.py, a pivotsSTUDY.ts file will be created in the same directory.
 Add the pivotsSTUDY.ts file to TOS
 
 > Within TOS: Charts > Studies > Edit Studies... > Import... > "Select pivotsSTUDY.ts file"
