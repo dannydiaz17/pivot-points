@@ -9,6 +9,7 @@ I needed a tool to fetch data from a website and calculate some values. And plot
 *Dependencies:*
 - Git
 - Python 3
+   - Pip
 - ThinkOrSwim
 
 ### **Downloading/Installation**
