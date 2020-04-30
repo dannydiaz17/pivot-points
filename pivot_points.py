@@ -19,6 +19,7 @@ def fetch():
 
 
 def printSelection():
+    print("\n")
     for i in range(5):
         temp = dict(qudict[i])
         name = temp['code']
@@ -79,12 +80,15 @@ def getInfo():
 
         volc = temp['volume']
         vl = int(volc.replace(",", ""))
-
-    arth(hi, lo, ps)
+    if hi == None or lo == None or ps == None:
+        print("Can't get required variables from CME")
+        quit()
+    else:
+        arth(hi, lo, ps)
 
 
 def printInfo():
-    print(name)
+    print("\n" + name + "\n")
     print("High = " + str(hi) + "\n")
     print("Low = " + str(lo) + "\n")
     print("Prior Settle = " + str(ps) + "\n")
@@ -110,7 +114,7 @@ def writeTS():
 
 
 def printPivots():
-    print("Symbol: " + name + "\n")
+    print("\n")
     print("R3:" + "{:.2f}".format(r3) + "\n")
     print("R2:" + "{:.2f}".format(r2) + "\n")
     print("PIVOT:" + "{:.2f}".format(p) + "\n")
