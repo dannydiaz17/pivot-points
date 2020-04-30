@@ -30,9 +30,13 @@ After running > python pivot_points.py, a pivotsSTUDY.ts file will be created in
 Add the pivotsSTUDY.ts file to TOS
 
 > If you get a ModuleNotFoundError: No module named 'requests'
-Run this command in shell
+> or any similar Error, make sure you have pip installed. 
+> Or it may just need an update.
+> Run this command in shell
+
+Windows
 ```
-pip install requests
+python -m pip install -U pip
 ```
 
 ## To do:
