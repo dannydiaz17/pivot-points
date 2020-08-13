@@ -2,7 +2,7 @@ import json
 import requests
 
 
-def fetch():
+def fetchCMEData():
     url = 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/146/G?pageSize\
     =50&_=1580536038065'
     page = requests.get(url).text
@@ -50,14 +50,18 @@ def arth(h, l, c):
 def getInfo():
 
     global name
+    global op
     global hi
     global lo
     global ps
     global vl
 
     name = temp['code']
+    if temp['open'] == '-':
 
-    if temp['high'] == '-':
+        op = None
+
+    elif temp['high'] == '-':
 
         hi = None
 
@@ -74,13 +78,14 @@ def getInfo():
         vl = None
 
     else:
+        op = float(temp['open'])
         hi = float(temp['high'])
         lo = float(temp['low'])
         ps = float(temp['priorSettle'])
 
         volc = temp['volume']
         vl = int(volc.replace(",", ""))
-    if hi == None or lo == None or ps == None:
+    if op == None or hi == None or lo == None or ps == None:
         print("Can't get required variables from CME")
         quit()
     else:
@@ -88,11 +93,12 @@ def getInfo():
 
 
 def printInfo():
-    print("\n" + name + "\n")
-    print("High = " + str(hi) + "\n")
-    print("Low = " + str(lo) + "\n")
-    print("Prior Settle = " + str(ps) + "\n")
-    print("Volume = " + str(vl) + "\n")
+    print("\n " + name + "\n")
+    print(" Open         :     " + str(op) + "\n")
+    print(" High         :     " + str(hi) + "\n")
+    print(" Low          :     " + str(lo) + "\n")
+    print(" Prior Settle :     " + str(ps) + "\n")
+    print(" Volume       :     " + str(vl) + "\n")
     printPivots()
 
 
@@ -100,13 +106,18 @@ def writeTS():
 
     reading = open("pivo.ts", 'r+').read().splitlines()
 
-    reading[16] = "R3 = %.2f;" % (r3)
-    reading[17] = "R2 = %.2f;" % (r2)
-    reading[18] = "R1 = %.2f;" % (r1)
-    reading[19] = "PP = %.2f;" % (p)
-    reading[20] = "S1 = %.2f;" % (s1)
-    reading[21] = "S2 = %.2f;" % (s2)
-    reading[22] = "S3 = %.2f;" % (s3)
+    reading[22] = "R3 = %.2f;" % (r3)
+    reading[23] = "R2 = %.2f;" % (r2)
+    reading[24] = "R1 = %.2f;" % (r1)
+    reading[25] = "PP = %.2f;" % (p)
+    reading[26] = "S1 = %.2f;" % (s1)
+    reading[27] = "S2 = %.2f;" % (s2)
+    reading[28] = "S3 = %.2f;" % (s3)
+    reading[29] = "\n"
+    reading[30] = "OP = %s;" % (op)
+    reading[31] = "HI = %s;" % (hi)
+    reading[32] = "LO = %s;" % (lo)
+    reading[33] = "CL = %s;" % (ps)
 
     with open("pivotsSTUDY.ts", 'w+') as writing:
         writing.write("\n".join(reading))
@@ -115,12 +126,13 @@ def writeTS():
 
 def printPivots():
     print("\n")
-    print("R3:" + "{:.2f}".format(r3) + "\n")
-    print("R2:" + "{:.2f}".format(r2) + "\n")
-    print("PIVOT:" + "{:.2f}".format(p) + "\n")
-    print("S1:" + "{:.2f}".format(s1) + "\n")
-    print("S2:" + "{:.2f}".format(s2) + "\n")
-    print("S3:" + "{:.2f}".format(s3) + "\n")
+    print(" R3           :" + "     {:.2f}".format(r3) + "\n")
+    print(" R2           :" + "     {:.2f}".format(r2) + "\n")
+    print(" R1           :" + "     {:.2f}".format(r1) + "\n")
+    print(" PIVOT        :" + "     {:.2f}".format(p)  + "\n")
+    print(" S1           :" + "     {:.2f}".format(s1) + "\n")
+    print(" S2           :" + "     {:.2f}".format(s2) + "\n")
+    print(" S3           :" + "     {:.2f}".format(s3) + "\n")
 
 #from parse import *
 def printInstr():
@@ -133,6 +145,8 @@ def printInstr():
 
     Always select Import and proceed to import
     for EACH INDIVIDUAL USE OF SCRIPT
+
+    Press 'Enter' to exit
     """)
     input("") # Let's you read before closing
 
@@ -148,11 +162,10 @@ def run(num):
 
 
 def main():
-    fetch()
+    fetchCMEData()
     printSelection()
-    selSYM = int(input("Pick 0 - 4\n Enter number of selection:\n"))
+    selSYM = int(input("Pick 0 - 4\n Enter number of selection:\n "))
     run(selSYM)
 
 
-if __name__ == "__main__":
-    main()
+main()
