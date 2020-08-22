@@ -38,6 +38,8 @@ Add the pivotsSTUDY.ts file to TOS
 Windows
 ```
 python -m pip install -U pip
+
+python -m pip install requests
 ```
 
 ## Color Codes for Price Levels
