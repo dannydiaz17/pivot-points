@@ -31,7 +31,7 @@ After running > python pivot_points.py, a pivotsSTUDY.ts file will be created in
 Add the pivotsSTUDY.ts file to TOS
 
 > If you get a ModuleNotFoundError: No module named 'requests'
-> or any similar Error, make sure you have pip installed. 
+> or any similar Error, make sure you have pip installed.
 > Or it may just need an update.
 > Run this command in shell
 
@@ -39,6 +39,16 @@ Windows
 ```
 python -m pip install -U pip
 ```
+
+## Color Codes for Price Levels
+Resistance  -  Orange
+Support     -  Purple
+
+Open        -  White
+Close       -  Gray
+High        -  Green
+Low         -  Red
+
 
 ## To do:
 
