@@ -34,30 +34,17 @@ LO = ;
 CL = ;
 
 
-R1.AddLabel(yes, "R1");
-R2.AddLabel(yes, "R2");
-R3.AddLabel(yes, "R3");
-S1.AddLabel(yes, "S1");
-S2.AddLabel(yes, "S2");
-S3.AddLabel(yes, "S3");
+R1.SetDefaultColor(color.orange);
+R2.SetDefaultColor(color.orange);
+R3.SetDefaultColor(color.orange);
+S1.SetDefaultColor(color.magenta);
+S2.SetDefaultColor(color.magenta);
+S3.SetDefaultColor(color.magenta);
 
-OP.AddLabel(yes, "OP");
-HI.AddLabel(yes, "HI");
-LO.AddLabel(yes, "LO");
-CL.AddLabel(yes, "CL");
-
-
-R1.SetDefaultColor(color.yellow);
-R2.SetDefaultColor(color.yellow);
-R3.SetDefaultColor(color.yellow);
-S1.SetDefaultColor(color.yellow);
-S2.SetDefaultColor(color.yellow);
-S3.SetDefaultColor(color.yellow);
-
-OP.SetDefaultColor(color.yellow);
-HI.SetDefaultColor(color.yellow);
-LO.SetDefaultColor(color.yellow);
-CL.SetDefaultColor(color.yellow);
+OP.SetDefaultColor(color.white);
+HI.SetDefaultColor(color.green);
+LO.SetDefaultColor(color.red);
+CL.SetDefaultColor(color.dark_gray);
 
 
 R1.SetPaintingStrategy(PaintingStrategy.HORIZONTAL);
