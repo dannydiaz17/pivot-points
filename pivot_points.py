@@ -1,5 +1,15 @@
 import json
 import requests
+from platform import system
+
+
+def DocumentsDir():
+
+    if system() == "Windows":
+        return "C:\\Users\\Danny\\Documents\\"
+
+    if system() == "Linux" | "Darwin":
+        return "/$HOME/Documents/"
 
 
 def fetchCMEData():
@@ -119,7 +129,7 @@ def writeTS():
     reading[32] = "LO = %s;" % (lo)
     reading[33] = "CL = %s;" % (ps)
 
-    with open("pivotsSTUDY.ts", 'w+') as writing:
+    with open(DocumentsDir() + "apivotsSTUDY.ts", 'w+') as writing:
         writing.write("\n".join(reading))
         writing.close()
 
@@ -134,8 +144,8 @@ def printPivots():
     print(" S2           :" + "     {:.2f}".format(s2) + "\n")
     print(" S3           :" + "     {:.2f}".format(s3) + "\n")
 
-#from parse import *
-def printInstr():
+def printInstr(): 
+    print("*STUDY.ts File Location > " + DocumentsDir() + "apivotsSTUDY.ts")
     print("""
     Instructions for TOS:\n
     1. Open ThinkOrSwim
