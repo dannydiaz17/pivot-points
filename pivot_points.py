@@ -129,7 +129,7 @@ def writeTS():
     reading[32] = "LO = %s;" % (lo)
     reading[33] = "CL = %s;" % (ps)
 
-    with open(DocumentsDir() + "apivotsSTUDY.ts", 'w+') as writing:
+    with open(DocumentsDir() + "pivotsSTUDY.ts", 'w+') as writing:
         writing.write("\n".join(reading))
         writing.close()
 
