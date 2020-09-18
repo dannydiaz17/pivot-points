@@ -145,7 +145,7 @@ def printPivots():
     print(" S3           :" + "     {:.2f}".format(s3) + "\n")
 
 def printInstr(): 
-    print("*STUDY.ts File Location > " + DocumentsDir() + "apivotsSTUDY.ts")
+    print("*STUDY.ts File Location > " + DocumentsDir() + "pivotsSTUDY.ts")
     print("""
     Instructions for TOS:\n
     1. Open ThinkOrSwim
