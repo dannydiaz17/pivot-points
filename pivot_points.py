@@ -1,12 +1,14 @@
 import json
 import requests
+from getpass import getuser
 from platform import system
 
 
 def DocumentsDir():
 
     if system() == "Windows":
-        return "C:\\Users\\Danny\\Documents\\"
+        username = getuser()
+        return "C:\\Users\\" + username + "\\Documents\\"
 
     if system() == "Linux" | "Darwin":
         return "/$HOME/Documents/"
