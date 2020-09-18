@@ -5,13 +5,18 @@ from platform import system
 
 
 def DocumentsDir():
+    username = getuser()
 
     if system() == "Windows":
-        username = getuser()
         return "C:\\Users\\" + username + "\\Documents\\"
 
-    if system() == "Linux" | "Darwin":
-        return "/$HOME/Documents/"
+    elif system() == "Linux":
+        return "/home/" + username + "/Documents/"
+
+    elif system() == "Darwin":
+        return "/Users/" + username + "/Documents/"
+    else:
+        print("BSD?!")
 
 
 def fetchCMEData():
@@ -146,7 +151,8 @@ def printPivots():
     print(" S2           :" + "     {:.2f}".format(s2) + "\n")
     print(" S3           :" + "     {:.2f}".format(s3) + "\n")
 
-def printInstr(): 
+
+def printInstr():
     print("*STUDY.ts File Location > " + DocumentsDir() + "pivotsSTUDY.ts")
     print("""
     Instructions for TOS:\n
@@ -176,7 +182,7 @@ def run(num):
 def main():
     fetchCMEData()
     printSelection()
-    selSYM = int(input("Pick 0 - 4\n Enter number of selection:\n "))
+    selSYM = int(input("Pick 0 - 4\nEnter number of selection:\n "))
     run(selSYM)
 
 

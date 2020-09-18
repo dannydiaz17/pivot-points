@@ -28,7 +28,8 @@ Windows
 ```
 
 After running > python pivot_points.py, a pivotsSTUDY.ts file will be created in the default 'Documents' directory.
-# Default 'Documents' directory is /$HOME/Documents/ on Linux/Unix systems, and C:\Users\{Your_Username}\Documents\ on Windows
+# Default 'Documents' directory is /home/{Your_Username}/Documents on Linux, /Users/{Your_Username}/Documents on Mac, and C:\Users\{Your_Username}\Documents\ on Windows
+
 Add the pivotsSTUDY.ts file to TOS
 
 > If you get a ModuleNotFoundError: No module named 'requests'
