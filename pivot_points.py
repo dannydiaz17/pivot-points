@@ -182,7 +182,7 @@ def run(num):
 def main():
     fetchCMEData()
     printSelection()
-    selSYM = int(input("Pick 0 - 4\nEnter number of selection:\n "))
+    selSYM = int(input("Pick 0 - 4\nEnter number of selection:\n"))
     run(selSYM)
 
 
