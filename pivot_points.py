@@ -4,7 +4,8 @@ from getpass import getuser
 from platform import system
 
 
-def DocumentsDir():
+def Documentsdir():
+
     username = getuser()
 
     if system() == "Windows":
@@ -15,6 +16,7 @@ def DocumentsDir():
 
     elif system() == "Darwin":
         return "/Users/" + username + "/Documents/"
+
     else:
         print("BSD?!")
 
@@ -75,23 +77,18 @@ def getInfo():
 
     name = temp['code']
     if temp['open'] == '-':
-
         op = None
 
     elif temp['high'] == '-':
-
         hi = None
 
     elif temp['low'] == '-':
-
         lo = None
 
     elif temp['priorSettle'] == '-':
-
         ps = None
 
     elif temp['volume'] == '-':
-
         vl = None
 
     else:
@@ -102,9 +99,11 @@ def getInfo():
 
         volc = temp['volume']
         vl = int(volc.replace(",", ""))
+
     if op == None or hi == None or lo == None or ps == None:
         print("Can't get required variables from CME")
         quit()
+
     else:
         arth(hi, lo, ps)
 
@@ -136,7 +135,7 @@ def writeTS():
     reading[32] = "LO = %s;" % (lo)
     reading[33] = "CL = %s;" % (ps)
 
-    with open(DocumentsDir() + "pivotsSTUDY.ts", 'w+') as writing:
+    with open(Documentsdir() + "pivotsSTUDY.ts", 'w+') as writing:
         writing.write("\n".join(reading))
         writing.close()
 
@@ -153,12 +152,12 @@ def printPivots():
 
 
 def printInstr():
-    print("*STUDY.ts File Location > " + DocumentsDir() + "pivotsSTUDY.ts")
+    print("*STUDY.ts File Location > " + Documentsdir() + "pivotsSTUDY.ts")
     print("""
     Instructions for TOS:\n
     1. Open ThinkOrSwim
     2. Go to the Charts Tab
-    3. Click on Studies > Edit Studies > Import (Bottom Left)
+    3. Click on Studies > Edit Studies(Ctrl+E) > Import (Bottom Left)
     4. Select pivotsSTUDY.ts
 
     Always select Import and proceed to import
