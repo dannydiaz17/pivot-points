@@ -9,7 +9,8 @@ I needed a tool to fetch data from a website and calculate some values. And plot
 *Dependencies:*
 - Git
 - Python 3
-   - Pip
+   - pip
+      - requests
 - ThinkOrSwim
 
 ### **Downloading/Installation**
@@ -18,13 +19,9 @@ Cloning Repo (Using OS Shell)
 git clone https://github.com/dannydiaz17/pivot-points.git
 cd pivot-points
 ```
-Linux or MacOS (Run the python script)
+Run the python script
 ```
 python pivot_points.py
-```
-Windows
-```
-\.pivot_points.py
 ```
 
 After running > python pivot_points.py, a pivotsSTUDY.ts file will be created in the default 'Documents' directory.
@@ -34,23 +31,27 @@ Add the pivotsSTUDY.ts file to TOS
 
 > If you get a ModuleNotFoundError: No module named 'requests'
 > or any similar Error, make sure you have pip installed.
-> Or it may just need an update.
-> Run this command in shell
+> Also make sure pip is up to date and you have the necessary modules installed via pip
+## Useful Shell Commands:
 
-Windows
 ```
-python -m pip install -U pip
+python -m pip install -U pip    #Installs 'pip'
 
-python -m pip install requests
+python -m pip install requests  #Installs 'requests' module via pip
 ```
 
 ## Color Codes for Price Levels
+
 Resistance  -  Orange
+
 Support     -  Purple
 
 Open        -  White
+
 Close       -  Gray
+
 High        -  Green
+
 Low         -  Red
 
 
