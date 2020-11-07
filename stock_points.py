@@ -4,27 +4,37 @@ import requests
 from getpass import getuser
 from platform import system
 
+
 global empty
 global symbol
 
-empty = False
 
-symbol = str(input("Which symbol would you like pivots for?\n"))
+empty = False
+invalid = False
+
+#symbol = str(input("Which symbol would you like pivots for?\n"))
+
+watchlist = ["AMD","TSLA","QQQ","FB","MSFT","NFLX","RYCEY","SNAP",]
 
 apikey = "NVRL5VTZOILNK0RFHAAHO0FU8TX5PPJI"
+
+username = getuser()
+
+system = system()
+
+length = len(watchlist)
 
 
 def Documentsdir():
 
-    username = getuser()
 
-    if system() == "Windows":
+    if system == "Windows":
         return "C:\\Users\\" + username + "\\Documents\\"
 
-    elif system() == "Linux":
+    elif system == "Linux":
         return "/home/" + username + "/Documents/"
 
-    elif system() == "Darwin":
+    elif system == "Darwin":
         return "/Users/" + username + "/Documents/"
 
     else:
@@ -32,7 +42,7 @@ def Documentsdir():
 
 
 def defineVars():
-
+    
     global op
     global hi
     global lo
@@ -47,6 +57,7 @@ def defineVars():
 
 def getPivots(h, l, c):
     # Pivot math
+    
     global p
     global r1
     global r2
@@ -54,6 +65,7 @@ def getPivots(h, l, c):
     global s1
     global s2
     global s3
+
 
     p = (h + l + c)/3
     r1 = (2 * p) - l
@@ -83,32 +95,47 @@ def get_todays_ohlc(symbol):
 
     else:
 
-        candles = tuple(data["candles"])
-        daily_ohlc = []
-        pivots = []
+        try:
 
-        days_of_data = len(candles)
+            candles = tuple(data["candles"])
+            daily_ohlc = []
+            pivots = []
 
-        for i in range(days_of_data):
+            days_of_data = len(candles)
 
-            day_data = candles[i]
+            for i in range(days_of_data):
 
-            op = float(day_data["open"])
-            hi = float(day_data["high"])
-            lo = float(day_data["low"])
-            cl = float(day_data["close"])
+                day_data = candles[i]
 
-            ohlc = (op, lo, hi, cl)
-            daily_ohlc.append(ohlc)
+                op = float(day_data["open"])
+                hi = float(day_data["high"])
+                lo = float(day_data["low"])
+                cl = float(day_data["close"])
 
-            pivot_points = getPivots(hi,lo,cl)
-            pivots.append(pivot_points)
+                ohlc = (op, lo, hi, cl)
+                daily_ohlc.append(ohlc)
 
-        todays_pivots = pivots[-1]
-        todays_ohlc = daily_ohlc[-1]
+                pivot_points = getPivots(hi,lo,cl)
+                pivots.append(pivot_points)
 
-        return todays_ohlc
+                try:
 
+                    todays_pivots = pivots[-1]
+                    todays_ohlc = daily_ohlc[-1]
+        
+                except:
+            
+                     print("Invalid Symbol")
+                     invalid = True
+                     pass
+    
+            return todays_ohlc
+       
+
+        except:
+            
+            pass
+            
 
 def get_todays_pivots():
 
@@ -179,11 +206,24 @@ def printHelp():
 def main():
 
     defineVars()
-    printInfo()
-    writeTS()
-    printHelp()
+    
+    if invalid == True:
 
-todays_ohlc = get_todays_ohlc(symbol)
-todays_pivots = get_todays_pivots()
+        pass
 
-main()
+    else:
+
+        printInfo()
+        writeTS()
+        printHelp()
+
+
+for i in range(length):
+    
+    symbol = watchlist[i]
+
+    todays_ohlc = get_todays_ohlc(watchlist[i])
+    todays_pivots = get_todays_pivots()
+
+    main()
+
