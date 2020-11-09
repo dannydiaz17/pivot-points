@@ -12,9 +12,14 @@ global symbol
 empty = False
 invalid = False
 
+
 #symbol = str(input("Which symbol would you like pivots for?\n"))
 
-watchlist = ["AMD","TSLA","QQQ","FB","MSFT","NFLX","RYCEY","SNAP",]
+
+stocks = ["AMD","FB","TSLA","MSFT","NFLX","QQQ","RYCEY","SNAP"]
+futures = []
+watchlist = stocks + futures
+
 
 apikey = "NVRL5VTZOILNK0RFHAAHO0FU8TX5PPJI"
 
@@ -42,7 +47,7 @@ def Documentsdir():
 
 
 def defineVars():
-    
+
     global op
     global hi
     global lo
@@ -57,7 +62,7 @@ def defineVars():
 
 def getPivots(h, l, c):
     # Pivot math
-    
+
     global p
     global r1
     global r2
@@ -122,20 +127,20 @@ def get_todays_ohlc(symbol):
 
                     todays_pivots = pivots[-1]
                     todays_ohlc = daily_ohlc[-1]
-        
+
                 except:
-            
+
                      print("Invalid Symbol")
                      invalid = True
                      pass
-    
+
             return todays_ohlc
-       
+
 
         except:
-            
+
             pass
-            
+
 
 def get_todays_pivots():
 
@@ -143,7 +148,6 @@ def get_todays_pivots():
 
 
 def printInfo():
-    os.system('clear')
     print("\n " + symbol + "\n")
     print("____________________________________________\n\n")
     print(" Open         :     " + str(op) + "\n")
@@ -187,15 +191,14 @@ def printPivots():
 
 
 def printHelp():
-    print("*STUDY.ts File Location > " + Documentsdir() + symbol + "_STUDY.ts")
+    print(" *STUDY.ts File Location > " + Documentsdir() + "{SYMBOL}_STUDY.ts")
     print("""
     Instructions for TOS:\n
     1. Open ThinkOrSwim
     2. Go to the Charts Tab
     3. Click on Studies > Edit Studies(Ctrl+E) > Import (Bottom Left)
-    4. Select """ + symbol + "_STUDY.ts\n" +
+    4. Hold Ctrl + {Click} to select all {SYMBOL}_STUDY.ts files
 
-    """
     Always select Import and proceed to import
     for EACH INDIVIDUAL USE OF SCRIPT
 
@@ -206,7 +209,7 @@ def printHelp():
 def main():
 
     defineVars()
-    
+
     if invalid == True:
 
         pass
@@ -215,11 +218,11 @@ def main():
 
         printInfo()
         writeTS()
-        printHelp()
 
+os.system('clear')
 
 for i in range(length):
-    
+
     symbol = watchlist[i]
 
     todays_ohlc = get_todays_ohlc(watchlist[i])
@@ -227,3 +230,4 @@ for i in range(length):
 
     main()
 
+printHelp()
