@@ -16,7 +16,7 @@ invalid = False
 #symbol = str(input("Which symbol would you like pivots for?\n"))
 
 
-stocks = ["AMD","FB","TSLA","MSFT","NFLX","QQQ","RYCEY","SNAP"]
+stocks = ["AAPL","AMD","FB","TSLA","MSFT","NFLX","QQQ","RYCEY","SNAP"]
 futures = []
 watchlist = stocks + futures
 
