@@ -1,12 +1,11 @@
-import os
-import json
-import requests
+import os, json, requests
 from getpass import getuser
 from platform import system
 
 
 global empty
-global symbol
+global r3
+
 
 
 empty = False
@@ -17,7 +16,7 @@ invalid = False
 
 
 stocks = ["AAPL","AMD","FB","TSLA","MSFT","NFLX","QQQ","RYCEY","SNAP"]
-futures = []
+futures = ["/NQ"]
 watchlist = stocks + futures
 
 
@@ -46,30 +45,26 @@ def Documentsdir():
         print("BSD?!")
 
 
-def defineVars():
 
-    global op
-    global hi
-    global lo
-    global cl
+def flist(watchlist):
 
-    op = float(todays_ohlc[0])
-    hi = float(todays_ohlc[2])
-    lo = float(todays_ohlc[1])
-    cl = float(todays_ohlc[3])
+    flist = str(watchlist)
+    flist = flist.replace("'",'')
+    flist = flist.replace('[','')
+    flist = flist.replace(']','')
+    flist = flist.replace('/','%2F')
+    flist = flist.replace(',','%2C')
+    flist = flist.replace(' ','')
 
-    getPivots(hi,lo,cl)
+    return flist
 
-def getPivots(h, l, c):
+
+def calculatePivots(data):
     # Pivot math
 
-    global p
-    global r1
-    global r2
-    global r3
-    global s1
-    global s2
-    global s3
+    h = data[0]
+    l = data[1]
+    c = data[2]
 
 
     p = (h + l + c)/3
@@ -80,71 +75,55 @@ def getPivots(h, l, c):
     s2 = p - h + l
     s3 = l - 2 * (h - p)
 
+    return r3,r2,r1,p,s1,s2,s3
 
-def get_todays_ohlc(symbol):
 
-    global todays_ohlc
+def get_todays_data():
 
-    global todays_pivots
+    global data
 
-    url = "https://api.tdameritrade.com/v1/marketdata/" + symbol + "/pricehistory?apikey=" + apikey + "&periodType=month&period=1&frequencyType=daily&frequency=1&needExtendedHoursData=true"
-
+    url = "https://api.tdameritrade.com/v1/marketdata/quotes?apikey=" + apikey + "&symbol=" + flist(watchlist)
     page = requests.get(url).text
-
-    data = json.loads(page)
-
-    if data["empty"] == 'true':
-
-        empty = True
-        pass
-
-    else:
-
-        try:
-
-            candles = tuple(data["candles"])
-            daily_ohlc = []
-            pivots = []
-
-            days_of_data = len(candles)
-
-            for i in range(days_of_data):
-
-                day_data = candles[i]
-
-                op = float(day_data["open"])
-                hi = float(day_data["high"])
-                lo = float(day_data["low"])
-                cl = float(day_data["close"])
-
-                ohlc = (op, lo, hi, cl)
-                daily_ohlc.append(ohlc)
-
-                pivot_points = getPivots(hi,lo,cl)
-                pivots.append(pivot_points)
-
-                try:
-
-                    todays_pivots = pivots[-1]
-                    todays_ohlc = daily_ohlc[-1]
-
-                except:
-
-                     print("Invalid Symbol")
-                     invalid = True
-                     pass
-
-            return todays_ohlc
+    data = dict(json.loads(page))
 
 
-        except:
+def getOHLC(product):
 
-            pass
+    global symbol
+    global op
+    global cl
+    global hi
+    global lo
 
+    try:
 
-def get_todays_pivots():
+        info = dict(data[product])
 
-    return todays_pivots
+        if info['assetType'] == "FUTURE":
+
+             symbol = info['futureActiveSymbol']
+             op = float(info['openPriceInDouble'])
+             cl = float(info['futureSettlementPrice'])
+             hi = float(info['highPriceInDouble'])
+             lo = float(info['lowPriceInDouble'])
+
+        elif info['assetType'] == "EQUITY":
+
+             symbol = info['symbol']
+             op = float(info['openPrice'])
+             cl = float(info['lastPrice'])
+             hi = float(info['highPrice'])
+             lo = float(info['lowPrice'])
+
+        else:
+
+             print("Unsupported Product")
+
+        return hi,lo,cl
+
+    except:
+
+        print("Error")
 
 
 def printInfo():
@@ -208,26 +187,17 @@ def printHelp():
 
 def main():
 
-    defineVars()
-
-    if invalid == True:
-
-        pass
-
-    else:
-
         printInfo()
         writeTS()
 
-os.system('clear')
+#os.system('clear')
 
-for i in range(length):
+get_todays_data()
 
-    symbol = watchlist[i]
+for products in data:
 
-    todays_ohlc = get_todays_ohlc(watchlist[i])
-    todays_pivots = get_todays_pivots()
-
+    print(products)
+    print(calculatePivots(getOHLC(products)))
     main()
 
 printHelp()
