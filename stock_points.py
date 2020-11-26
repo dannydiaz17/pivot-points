@@ -13,7 +13,7 @@ invalid = False
 #symbol = str(input("Which symbol would you like pivots for?\n"))
 
 
-stocks = ["AAPL","AMD","FB","MSFT","NFLX","QQQ","RYCEY","SNAP","TSLA"]
+stocks = ["AAPL","AMD","FB","MSFT","NFLX","QQQ","RYCEY","SNAP","SPY","TSLA"]
 futures = ["/NQ","/ES"]
 forex = ["USD/JPY"]
 
