@@ -4,8 +4,6 @@ from platform import system
 
 
 global empty
-global r3
-
 
 
 empty = False
@@ -15,8 +13,8 @@ invalid = False
 #symbol = str(input("Which symbol would you like pivots for?\n"))
 
 
-stocks = ["AAPL","AMD","FB","TSLA","MSFT","NFLX","QQQ","RYCEY","SNAP"]
-futures = ["/NQ"]
+stocks = ["AAPL","AMD","FB","MSFT","NFLX","QQQ","RYCEY","SNAP","TSLA"]
+futures = ["/NQ","/ES"]
 watchlist = stocks + futures
 
 
