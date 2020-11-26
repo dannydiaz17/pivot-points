@@ -25,7 +25,9 @@ python pivot_points.py
 ```
 
 After running > python stock_points.py, {product}_STUDY.ts files will be created in the default 'Documents' directory from the 'watchlist' variable.
-##### Default 'Documents' directory is /home/{Your_Username}/Documents on Linux, /Users/{Your_Username}/Documents on Mac, and C:\Users\{Your_Username}\Documents\ on Windows
+##### Default 'Documents' directory is /home/{Your_Username}/Documents on Linux,
+      /Users/{Your_Username}/Documents on Mac, and 
+      C:\Users\{Your_Username}\Documents\ on Windows
 
 Add the pivotsSTUDY.ts file to TOS
 
