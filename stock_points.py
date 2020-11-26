@@ -97,7 +97,7 @@ def getOHLC(product):
 
         info = dict(data[product])
 
-        if info['assetType'] == "FUTURE":
+        if info['assetMainType'] == "FUTURE":
 
              symbol = info['futureActiveSymbol']
              op = float(info['openPriceInDouble'])
@@ -105,13 +105,14 @@ def getOHLC(product):
              hi = float(info['highPriceInDouble'])
              lo = float(info['lowPriceInDouble'])
 
-        elif info['assetType'] == "EQUITY":
+        elif info['assetMainType'] == "EQUITY":
 
              symbol = info['symbol']
              op = float(info['openPrice'])
              cl = float(info['lastPrice'])
              hi = float(info['highPrice'])
              lo = float(info['lowPrice'])
+
 
         else:
 
@@ -194,7 +195,7 @@ get_todays_data()
 
 for products in data:
 
-    r3,r2,r1,p,s1,s2,s3 =  calculatePivots(getOHLC(products))
+    r3,r2,r1,p,s1,s2,s3 = calculatePivots(getOHLC(products))
     main()
 
 printHelp()
