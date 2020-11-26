@@ -196,8 +196,7 @@ get_todays_data()
 
 for products in data:
 
-    print(products)
-    print(calculatePivots(getOHLC(products)))
+    r3,r2,r1,p,s1,s2,s3 =  calculatePivots(getOHLC(products))
     main()
 
 printHelp()
