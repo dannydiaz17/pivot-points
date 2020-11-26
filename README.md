@@ -1,4 +1,4 @@
-#  **pivot-points**
+#  **stock-points**
 Automatically sets up pivot points for thinkorswim
 
 ## **What is this?**
@@ -24,7 +24,7 @@ Run the python script
 python pivot_points.py
 ```
 
-After running > python pivot_points.py, a pivotsSTUDY.ts file will be created in the default 'Documents' directory.
+After running > python stock_points.py, a {product}_STUDY.ts file will be created in the default 'Documents' directory.
 ##### Default 'Documents' directory is /home/{Your_Username}/Documents on Linux, /Users/{Your_Username}/Documents on Mac, and C:\Users\{Your_Username}\Documents\ on Windows
 
 Add the pivotsSTUDY.ts file to TOS
