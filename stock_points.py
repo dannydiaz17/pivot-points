@@ -15,7 +15,9 @@ invalid = False
 
 stocks = ["AAPL","AMD","FB","MSFT","NFLX","QQQ","RYCEY","SNAP","TSLA"]
 futures = ["/NQ","/ES"]
-watchlist = stocks + futures
+forex = ["USD/JPY"]
+
+watchlist = stocks + futures + forex
 
 
 apikey = "NVRL5VTZOILNK0RFHAAHO0FU8TX5PPJI"
@@ -88,6 +90,7 @@ def get_todays_data():
 def getOHLC(product):
 
     global symbol
+    global asset
     global op
     global cl
     global hi
@@ -100,19 +103,31 @@ def getOHLC(product):
         if info['assetMainType'] == "FUTURE":
 
              symbol = info['futureActiveSymbol']
+             asset = info['assetMainType']
              op = float(info['openPriceInDouble'])
              cl = float(info['futureSettlementPrice'])
              hi = float(info['highPriceInDouble'])
              lo = float(info['lowPriceInDouble'])
 
+
         elif info['assetMainType'] == "EQUITY":
 
              symbol = info['symbol']
+             asset = info['assetMainType']
              op = float(info['openPrice'])
              cl = float(info['lastPrice'])
              hi = float(info['highPrice'])
              lo = float(info['lowPrice'])
 
+
+        elif info['assetMainType'] == "FOREX":
+
+             symbol = info['symbol']
+             asset = info['assetMainType']
+             op = float(info['openPriceInDouble'])
+             cl = float(info['closePriceInDouble'])
+             hi = float(info['highPriceInDouble'])
+             lo = float(info['lowPriceInDouble'])
 
         else:
 
@@ -152,7 +167,7 @@ def writeTS():
     reading[32] = "LO = %s;" % (lo)
     reading[33] = "CL = %s;" % (cl)
 
-    with open(Documentsdir() + symbol + "_STUDY.ts", 'w+') as writing:
+    with open(Documentsdir() + symbol.replace("/","_") + "_STUDY.ts", 'w+') as writing:
         writing.write("\n".join(reading))
         writing.close()
 
