@@ -1,7 +1,10 @@
-import json
-import requests
+import calendar, datetime, json, requests
 from getpass import getuser
 from platform import system
+
+def Dayofweek(date):
+    dow = datetime.datetime.strptime(date, '%Y-%m-%d').weekday()
+    return (calendar.day_name[dow])
 
 
 def Documentsdir():
@@ -21,27 +24,56 @@ def Documentsdir():
         print("BSD?!")
 
 
+def lastMarketClose():
+    today = datetime.datetime.now().date()
+
+    if Dayofweek(str(today)) == "Monday" or Dayofweek(str(today)) == "Sunday" or Dayofweek(str(today)) == "Saturday":
+
+        last_friday = str(today - datetime.timedelta(days=datetime.datetime.now().weekday()) + datetime.timedelta(days=4))
+
+        return formatDate(last_friday)
+
+    else:
+
+        yesterday = str(today - datetime.timedelta(days=-1))
+
+        return formatDate(yesterday)
+
+
+def formatDate(date):
+
+        y, m, d = date.split("-")
+
+        return m + '/' + d + '/' + y
+
+
 def fetchCMEData():
-    url = 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/146/G?pageSize\
-    =50&_=1580536038065'
+
+    url = "https://www.cmegroup.com/CmeWS/mvc/Settlements/Futures/Settlements/146/FUT?tradeDate=" + lastMarketClose() +"&strategy=DEFAULT"
+
+    #url = 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/146/G?'
     page = requests.get(url).text
     data = json.loads(page)
 
-    global qudict
-    # Nested Dictionaries
-        # qudict as in Quotes Dict
-        # fdict as in Final Dict
-    qudict = data["quotes"]
+    global settlements
+    print(data)
+    type(data)
+    print(url)
 
-    ## I'm leaving this line in for future debugging
-    ## pretty = json.dumps(data,indent=4, separators=(',', ':'))
+    try:
+
+        settlements = data["settlements"]
+
+    except:
+
+        print("Error fetching CME vars")
 
 
 def printSelection():
     print("\n")
     for i in range(5):
-        temp = dict(qudict[i])
-        name = temp['code']
+        temp = dict(settlements[i])
+        name = temp['month']
         vol = temp['volume']
         print(str(i) + ": " + name + " Volume - " + str(vol) + "\n")
 
@@ -75,7 +107,7 @@ def getInfo():
     global ps
     global vl
 
-    name = temp['code']
+    name = temp['month']
     if temp['open'] == '-':
         op = None
 
@@ -85,7 +117,7 @@ def getInfo():
     elif temp['low'] == '-':
         lo = None
 
-    elif temp['priorSettle'] == '-':
+    elif temp['settle'] == '-':
         ps = None
 
     elif temp['volume'] == '-':
@@ -95,7 +127,7 @@ def getInfo():
         op = float(temp['open'])
         hi = float(temp['high'])
         lo = float(temp['low'])
-        ps = float(temp['priorSettle'])
+        ps = float(temp['settle'])
 
         volc = temp['volume']
         vl = int(volc.replace(",", ""))
@@ -171,7 +203,7 @@ def printInstr():
 def run(num):
     global temp
 
-    temp = dict(qudict[num])
+    temp = dict(settlements[num])
     getInfo()
     printInfo()
     writeTS()
