@@ -56,9 +56,6 @@ def fetchCMEData():
     data = json.loads(page)
 
     global settlements
-    print(data)
-    type(data)
-    print(url)
 
     try:
 
