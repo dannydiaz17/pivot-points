@@ -6,7 +6,6 @@ def Dayofweek(date):
     dow = datetime.datetime.strptime(date, '%Y-%m-%d').weekday()
     return (calendar.day_name[dow])
 
-
 def Documentsdir():
 
     username = getuser()
@@ -27,15 +26,21 @@ def Documentsdir():
 def lastMarketClose():
     today = datetime.datetime.now().date()
 
-    if Dayofweek(str(today)) == "Monday" or Dayofweek(str(today)) == "Sunday" or Dayofweek(str(today)) == "Saturday":
+    if Dayofweek(str(today)) == "Monday":
 
-        last_friday = str(today - datetime.timedelta(days=datetime.datetime.now().weekday()) + datetime.timedelta(days=4))
+        last_friday = str(today - datetime.timedelta(days=3))
+    
+        return formatDate(last_friday)
 
+    elif Dayofweek(str(today)) == "Sunday":
+    
+        last_friday = str(today - datetime.timedelta(days=2))
+        
         return formatDate(last_friday)
 
     else:
 
-        yesterday = str(today - datetime.timedelta(days=-1))
+        yesterday = str(today - datetime.timedelta(days=1))
 
         return formatDate(yesterday)
 
@@ -59,6 +64,7 @@ def fetchCMEData():
 
     try:
 
+        print(url)
         settlements = data["settlements"]
 
     except:
