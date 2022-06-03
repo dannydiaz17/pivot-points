@@ -54,10 +54,10 @@ def formatDate(date):
 
 def fetchCMEData():
 
-    url = "https://www.cmegroup.com/CmeWS/mvc/Settlements/Futures/Settlements/146/FUT?tradeDate=" + lastMarketClose() +"&strategy=DEFAULT"
-
+    url = "https://www.cmegroup.com/CmeWS/mvc/Settlements/Futures/Settlements/146/FUT?tradeDate=" + lastMarketClose()
+    headers = {"User-Agent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.61 Safari/537.36"}
     #url = 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/146/G?'
-    page = requests.get(url).text
+    page = requests.get(url, headers=headers).text
     data = json.loads(page)
 
     global settlements
