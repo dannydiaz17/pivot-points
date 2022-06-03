@@ -54,17 +54,14 @@ def formatDate(date):
 
 def fetchCMEData():
 
-    url = "https://www.cmegroup.com/CmeWS/mvc/Settlements/Futures/Settlements/146/FUT?tradeDate=" + lastMarketClose() +"&strategy=DEFAULT"
-
-    #url = 'https://www.cmegroup.com/CmeWS/mvc/Quotes/Future/146/G?'
-    page = requests.get(url).text
+    url = "https://www.cmegroup.com/CmeWS/mvc/Settlements/Futures/Settlements/146/FUT?strategy=DEFAULT&tradeDate=" + lastMarketClose()
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/101.0.4951.67 Safari/537.36"}
+    page = requests.get(url, headers=headers).text
     data = json.loads(page)
-
     global settlements
 
     try:
 
-        print(url)
         settlements = data["settlements"]
 
     except:
@@ -215,6 +212,7 @@ def run(num):
 
 def main():
     fetchCMEData()
+    
     printSelection()
     selSYM = int(input("Pick 0 - 4\nEnter number of selection:\n"))
     run(selSYM)
