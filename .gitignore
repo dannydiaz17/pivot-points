@@ -6,4 +6,8 @@ oldREADME.md
 *.pyc
 *.yml
 .pivot_points.py.un~
+<<<<<<< Updated upstream
 *.py~
+=======
+pivot_points.py~
+>>>>>>> Stashed changes
