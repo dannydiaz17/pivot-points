@@ -44,7 +44,7 @@ S3.SetDefaultColor(color.magenta);
 OP.SetDefaultColor(color.white);
 HI.SetDefaultColor(color.green);
 LO.SetDefaultColor(color.red);
-CL.SetDefaultColor(color.dark_gray);
+CL.SetDefaultColor(color.dark_orange);
 
 
 R1.SetPaintingStrategy(PaintingStrategy.HORIZONTAL);
