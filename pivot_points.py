@@ -2,6 +2,8 @@ import calendar, datetime, json, requests
 from getpass import getuser
 from platform import system
 
+
+
 def Dayofweek(date):
     dow = datetime.datetime.strptime(date, '%Y-%m-%d').weekday()
     return (calendar.day_name[dow])
@@ -22,28 +24,34 @@ def Documentsdir():
     else:
         print("BSD?!")
 
+def selectedDate(d):
+    today = datetime.datetime.now().date()
+    return today.replace(day=d)
+
 
 def lastMarketClose():
-    today = datetime.datetime.now().date()
 
-    if Dayofweek(str(today)) == "Monday":
+        today = datetime.datetime.now().date()
 
-        last_friday = str(today - datetime.timedelta(days=3))
-    
-        return formatDate(last_friday)
+        if Dayofweek(str(today)) == "Monday":
 
-    elif Dayofweek(str(today)) == "Sunday":
-    
-        last_friday = str(today - datetime.timedelta(days=2))
+            last_friday = str(today - datetime.timedelta(days=3))
         
-        return formatDate(last_friday)
+            return formatDate(last_friday)
 
-    else:
+        elif Dayofweek(str(today)) == "Sunday":
+        
+            last_friday = str(today - datetime.timedelta(days=2))
+            
+            return formatDate(last_friday)
 
-        yesterday = str(today - datetime.timedelta(days=1))
+        else:
 
-        return formatDate(yesterday)
+            yesterday = str(today - datetime.timedelta(days=1))
 
+            return formatDate(yesterday)
+    
+        
 
 def formatDate(date):
 
@@ -52,7 +60,7 @@ def formatDate(date):
         return m + '/' + d + '/' + y
 
 
-def fetchCMEData():
+def fetchCMEDataReg():
 
 
     url = "https://www.cmegroup.com/CmeWS/mvc/Settlements/Futures/Settlements/146/FUT?tradeDate=" + lastMarketClose()
@@ -60,6 +68,30 @@ def fetchCMEData():
     page = requests.get(url, headers=headers).text
     data = json.loads(page)
     global settlements
+    global empty
+    
+    empty = data['empty']
+    
+    try:
+
+        settlements = data["settlements"]
+
+    except:
+
+        print("Error fetching CME vars")
+
+def fetchCMEDataAlt():
+
+
+    url = "https://www.cmegroup.com/CmeWS/mvc/Settlements/Futures/Settlements/146/FUT?tradeDate=" + formatDate(str(selectedDate(pivotDate)))
+    headers = {"User-Agent" : "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.61 Safari/537.36"}
+    page = requests.get(url, headers=headers).text
+    data = json.loads(page)
+    global settlements
+    global empty
+    
+    empty = data['empty']
+   
 
     try:
 
@@ -69,15 +101,15 @@ def fetchCMEData():
 
         print("Error fetching CME vars")
 
-
 def printSelection():
     print("\n")
+
     for i in range(5):
+
         temp = dict(settlements[i])
         name = temp['month']
         vol = temp['volume']
         print(str(i) + ": " + name + " Volume - " + str(vol) + "\n")
-
 
 def arth(h, l, c):
     # Pivot math
@@ -212,11 +244,36 @@ def run(num):
 
 
 def main():
-    fetchCMEData()
+    global pivotDate
+    fetchCMEDataReg()
+    if empty is True:
+        
+        print("No Data Available for this date")
+        pivotDate = int(input("What day would you like the pivots for?\n"))
+        fetchCMEDataAlt()
+
+        try:
+            
+            printSelection()
+
+        except:
+
+            print("Couldn't get data for this date either")
+            pivotDate = int(input("What day would you like the pivots for?\n"))
+            fetchCMEDataAlt()
+            printSelection()
+
+        finally:
+
+            selSYM = int(input("Pick 0 - 4\nEnter number of selection:\n"))
+            run(selSYM)    
+           
+        
+    else:
     
-    printSelection()
-    selSYM = int(input("Pick 0 - 4\nEnter number of selection:\n"))
-    run(selSYM)
+        printSelection()
+        selSYM = int(input("Pick 0 - 4\nEnter number of selection:\n"))
+        run(selSYM)
 
 
 main()
